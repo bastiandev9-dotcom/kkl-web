@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { agenda } from './agenda';
 import { destinasi } from './destinations';
@@ -62,6 +64,19 @@ describe('model 3D', () => {
   it('selalu memiliki fallback yang valid', () => {
     for (const model of models) {
       expect(['procedural', 'icon']).toContain(model.fallback);
+    }
+  });
+
+  it('menyertakan generator untuk setiap fallback procedural', () => {
+    for (const model of models.filter((item) => item.fallback === 'procedural')) {
+      expect(model.proceduralId).toBeTruthy();
+    }
+  });
+
+  it('menunjuk file GLB yang tersedia', () => {
+    for (const model of models.filter((item) => item.file)) {
+      const filePath = fileURLToPath(new URL(`../../public${model.file}`, import.meta.url));
+      expect(existsSync(filePath)).toBe(true);
     }
   });
 });

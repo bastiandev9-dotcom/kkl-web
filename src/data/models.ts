@@ -6,27 +6,30 @@ export interface ModelEntry {
   scale?: number;
   rotationY?: number;
   yOffset?: number;
+  poster?: string;
   credit?: string;
 }
 
 export const models: ModelEntry[] = [
   {
     key: 'ulun-danu',
-    file: '/models/ulun-danu.glb',
+    file: '/glb/ulun-danu.glb',
     fallback: 'procedural',
     proceduralId: 'meru',
+    poster: '/posters/ulun-danu.svg',
     credit: 'ulun-danu',
   },
   {
     key: 'candi-bentar',
-    file: '/models/candi-bentar.glb',
+    file: '/glb/candi-bentar.glb',
     fallback: 'procedural',
     proceduralId: 'candiBentar',
+    poster: '/posters/candi-bentar.svg',
     credit: 'candi-bentar',
   },
   {
     key: 'patung-pandawa',
-    file: '/models/patung-pandawa.glb',
+    file: '/glb/pandawa-statue.glb',
     fallback: 'icon',
     credit: 'patung-pandawa',
   },
@@ -36,7 +39,8 @@ export const models: ModelEntry[] = [
   },
   {
     key: 'penjor',
-    fallback: 'icon',
+    fallback: 'procedural',
+    proceduralId: 'penjor',
   },
   {
     key: 'kampus',

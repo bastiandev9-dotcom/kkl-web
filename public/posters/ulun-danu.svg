@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8f9fa"/>
+      <stop offset="0.55" stop-color="#eef3ed"/>
+      <stop offset="1" stop-color="#dbe7dd"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c9d9cb"/>
+      <stop offset="1" stop-color="#a9c2ad"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8b573a"/>
+      <stop offset="1" stop-color="#633c29"/>
+    </linearGradient>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a5a48"/>
+      <stop offset="1" stop-color="#2c362b"/>
+    </linearGradient>
+    <linearGradient id="island" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5d7a58"/>
+      <stop offset="1" stop-color="#466242"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#d9f18a" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#d9f18a" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="waterClip">
+      <rect x="0" y="520" width="800" height="280"/>
+    </clipPath>
+  </defs>
+
+  <rect width="800" height="800" fill="url(#sky)"/>
+  <circle cx="628" cy="154" r="120" fill="url(#sunGlow)"/>
+  <circle cx="628" cy="154" r="58" fill="#d9f18a" opacity="0.85"/>
+
+  <path d="M0 425 L95 335 L165 390 L250 300 L340 405 L430 340 L520 412 L620 320 L710 385 L800 345 L800 540 L0 540 Z"
+        fill="#b9cbb7" opacity="0.85"/>
+  <path d="M0 475 L90 405 L175 452 L275 380 L370 465 L470 405 L575 468 L680 400 L800 455 L800 560 L0 560 Z"
+        fill="#88a586" opacity="0.9"/>
+
+  <rect x="0" y="520" width="800" height="280" fill="url(#water)"/>
+
+  <g clip-path="url(#waterClip)" opacity="0.18" transform="translate(0 1040) scale(1 -1)" fill="#35503b">
+    <rect x="315" y="490" width="170" height="22" rx="3"/>
+    <rect x="330" y="446" width="140" height="22" rx="3"/>
+    <rect x="344" y="402" width="112" height="22" rx="3"/>
+    <rect x="357" y="358" width="86" height="22" rx="3"/>
+    <rect x="369" y="314" width="62" height="22" rx="3"/>
+    <rect x="382" y="270" width="36" height="22" rx="3"/>
+    <rect x="392" y="176" width="16" height="80" rx="4"/>
+    <path d="M300 492 L400 452 L500 492 Z"/>
+    <path d="M318 448 L400 410 L482 448 Z"/>
+    <path d="M335 404 L400 368 L465 404 Z"/>
+    <path d="M351 360 L400 326 L449 360 Z"/>
+    <path d="M367 316 L400 286 L433 316 Z"/>
+    <path d="M382 272 L400 246 L418 272 Z"/>
+  </g>
+
+  <g clip-path="url(#waterClip)" opacity="0.22" stroke="#eef3ed" stroke-width="2" fill="none">
+    <path d="M80 585 H300"/>
+    <path d="M505 610 H700"/>
+    <path d="M170 655 H390"/>
+    <path d="M470 690 H650"/>
+    <path d="M55 725 H250"/>
+  </g>
+
+  <ellipse cx="400" cy="525" rx="190" ry="26" fill="#466242" opacity="0.5"/>
+  <ellipse cx="400" cy="518" rx="150" ry="18" fill="url(#island)"/>
+
+  <g>
+    <rect x="300" y="492" width="200" height="18" rx="3" fill="#d8d2c4"/>
+    <rect x="318" y="472" width="164" height="20" rx="2" fill="url(#wood)"/>
+    <path d="M300 472 L400 440 L500 472 Z" fill="url(#roof)"/>
+    <rect x="352" y="462" width="28" height="28" rx="2" fill="#2c362b"/>
+
+    <rect x="329" y="428" width="142" height="20" rx="2" fill="url(#wood)"/>
+    <path d="M313 428 L400 397 L487 428 Z" fill="url(#roof)"/>
+
+    <rect x="342" y="384" width="116" height="20" rx="2" fill="url(#wood)"/>
+    <path d="M327 384 L400 355 L473 384 Z" fill="url(#roof)"/>
+
+    <rect x="354" y="340" width="92" height="20" rx="2" fill="url(#wood)"/>
+    <path d="M340 340 L400 313 L460 340 Z" fill="url(#roof)"/>
+
+    <rect x="365" y="296" width="70" height="20" rx="2" fill="url(#wood)"/>
+    <path d="M352 296 L400 270 L448 296 Z" fill="url(#roof)"/>
+
+    <rect x="376" y="252" width="48" height="20" rx="2" fill="url(#wood)"/>
+    <path d="M364 252 L400 228 L436 252 Z" fill="url(#roof)"/>
+
+    <rect x="386" y="208" width="28" height="20" rx="2" fill="url(#wood)"/>
+    <path d="M377 208 L400 186 L423 208 Z" fill="url(#roof)"/>
+
+    <rect x="394" y="150" width="12" height="40" rx="3" fill="#c8a24a"/>
+    <circle cx="400" cy="146" r="9" fill="#c8a24a"/>
+  </g>
+
+  <g fill="#3d5a3b">
+    <path d="M0 530 C60 470 115 500 155 545 L155 640 L0 640 Z"/>
+    <path d="M800 528 C735 468 680 505 640 545 L640 650 L800 650 Z"/>
+  </g>
+  <g fill="#557653" opacity="0.8">
+    <circle cx="65" cy="530" r="34"/>
+    <circle cx="110" cy="550" r="26"/>
+    <circle cx="692" cy="535" r="31"/>
+    <circle cx="741" cy="552" r="24"/>
+  </g>
+
+  <rect x="58" y="724" width="132" height="6" rx="3" fill="#eef3ed" opacity="0.6"/>
+  <rect x="240" y="746" width="70" height="5" rx="2.5" fill="#eef3ed" opacity="0.45"/>
+</svg>

@@ -1,0 +1,24 @@
+---
+import { anggota } from '../data/members';
+import MemberCard from './MemberCard.astro';
+import SectionHeader from './SectionHeader.astro';
+---
+
+<section id="anggota" class="scroll-mt-24 bg-surface py-24 sm:py-28 lg:py-32">
+  <div class="container-page">
+    <SectionHeader
+      eyebrow="Tim"
+      title="Mahasiswa di balik perjalanan"
+      description="Struktur kepanitiaan dan anggota KKL Informatika UPGRIS 2026."
+      titleId="anggota-judul"
+    />
+
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      {
+        anggota.map((item) => (
+          <MemberCard anggota={item} />
+        ))
+      }
+    </div>
+  </div>
+</section>

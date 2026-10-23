@@ -88,6 +88,17 @@
   --container-content: 80rem;
 }
 
+@utility container-page {
+  width: 100%;
+  max-width: var(--container-content);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+
+  @media (min-width: 640px) {
+    padding-inline: 2rem;
+  }
+}
+
 @layer base {
   :root {
     color-scheme: light;

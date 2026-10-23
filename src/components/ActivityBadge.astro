@@ -1,0 +1,15 @@
+---
+import type { JenisKegiatan } from '../data/agenda';
+import { activityMeta } from '../lib/activity';
+
+interface Props {
+  jenis: JenisKegiatan;
+}
+
+const { jenis } = Astro.props;
+const meta = activityMeta[jenis];
+---
+
+<span class={`inline-flex items-center whitespace-nowrap rounded-pill border px-3 py-1 text-xs font-medium ${meta.className}`}>
+  {meta.label}
+</span>

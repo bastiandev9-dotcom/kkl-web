@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+import credits from '../data/credits.json';
+---
+
+<Base title="Kredit aset 3D" description={`Kredit model 3D dan aset visual ${site.title}.`}>
+  <main id="konten" class="container-page py-16 sm:py-20">
+    <a href="/" class="text-sm font-medium text-brand hover:underline">← Kembali ke beranda</a>
+
+    <p class="mt-8 text-label uppercase text-brand">Lisensi & atribusi</p>
+    <h1 class="mt-3 text-h1 text-fg">Kredit aset 3D</h1>
+    <p class="mt-4 max-w-2xl text-base leading-relaxed text-fg-muted">
+      Daftar model 3D yang digunakan pada website ini. Informasi pembuat, alat, dan lisensi akan
+      dilengkapi sebelum publikasi.
+    </p>
+
+    <div class="mt-8 overflow-x-auto rounded-xl border border-line">
+      <table class="w-full min-w-[42rem] border-collapse text-left text-sm">
+        <thead class="bg-surface">
+          <tr>
+            <th scope="col" class="px-5 py-3 font-medium text-fg">Aset</th>
+            <th scope="col" class="px-5 py-3 font-medium text-fg">Pembuat</th>
+            <th scope="col" class="px-5 py-3 font-medium text-fg">Alat & tanggal</th>
+            <th scope="col" class="px-5 py-3 font-medium text-fg">Lisensi</th>
+            <th scope="col" class="px-5 py-3 font-medium text-fg">Tautan</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-line bg-canvas">
+          {
+            credits.map((item) => (
+              <tr>
+                <td class="px-5 py-4 font-medium text-fg">{item.judul}</td>
+                <td class="px-5 py-4 text-fg-muted">{item.pembuat}</td>
+                <td class="px-5 py-4 text-fg-muted">
+                  {item.tool}
+                  <span class="mt-0.5 block text-xs text-fg-subtle">{item.tanggal}</span>
+                </td>
+                <td class="px-5 py-4 text-fg-muted">{item.lisensi}</td>
+                <td class="px-5 py-4 text-fg-muted">
+                  {item.url ? (
+                    <a
+                      href={item.url}
+                      class="font-medium text-brand hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Sumber
+                    </a>
+                  ) : (
+                    '—'
+                  )}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-6 max-w-2xl text-sm leading-relaxed text-fg-muted">
+      Jika menemukan aset yang perlu diperbarui atribusinya, hubungi pengelola website melalui
+      kanal resmi program studi.
+    </p>
+  </main>
+</Base>

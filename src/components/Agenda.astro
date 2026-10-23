@@ -1,0 +1,73 @@
+---
+import { agenda } from '../data/agenda';
+import { info } from '../data/info';
+import { roman } from '../lib/format';
+import ActivityBadge from './ActivityBadge.astro';
+import SectionHeader from './SectionHeader.astro';
+---
+
+<section id="agenda" class="scroll-mt-24 bg-surface py-24 sm:py-28 lg:py-32">
+  <div class="container-page">
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <SectionHeader
+        eyebrow="Rangkaian acara"
+        title="Agenda lima hari"
+        description="Susunan kegiatan KKL Bali 2026 dari keberangkatan hingga kembali ke Semarang. Jam dan urutan mengikuti jadwal perjalanan."
+        titleId="agenda-judul"
+      />
+      <p class="shrink-0 rounded-pill border border-line bg-canvas px-4 py-2 text-xs font-medium text-fg-muted">
+        18-22 Agustus 2026
+      </p>
+    </div>
+
+    <p class="mt-8 rounded-lg border border-warning/30 bg-warning-subtle px-4 py-3 text-sm leading-relaxed text-fg">
+      {info.catatan}
+    </p>
+
+    <div class="mt-6 space-y-6">
+      {
+        agenda.map((hari) => (
+          <article
+            id={`hari-${hari.nomor}`}
+            class="scroll-mt-24 overflow-hidden rounded-xl border border-line bg-canvas"
+          >
+            <header class="flex flex-col gap-3 border-b border-line bg-surface px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+              <div class="flex items-center gap-4">
+                <span
+                  class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-brand font-mono text-sm text-on-brand"
+                  aria-hidden="true"
+                >
+                  {String(hari.nomor).padStart(2, '0')}
+                </span>
+                <div>
+                  <p class="text-label uppercase text-brand">
+                    Hari {roman(hari.nomor)} · {hari.tanggal}
+                  </p>
+                  <h3 class="mt-1 text-h4 text-fg">{hari.hariLabel}</h3>
+                </div>
+              </div>
+              <span class="self-start rounded-pill border border-line bg-canvas px-3 py-1 text-xs font-medium text-fg-muted sm:self-auto">
+                {hari.zona}
+              </span>
+            </header>
+
+            <ol class="divide-y divide-line">
+              {hari.item.map((item) => (
+                <li class="grid grid-cols-[5.25rem_1fr] gap-x-3 gap-y-2 px-5 py-4 sm:grid-cols-[7rem_1fr_auto] sm:items-start sm:px-6">
+                  <span class="pt-0.5 text-sm font-medium tabular-nums text-fg">{item.jam}</span>
+                  <div class="min-w-0">
+                    <p class="text-sm font-medium text-fg">{item.kegiatan}</p>
+                    {item.lokasi && <p class="mt-1 text-xs text-fg-muted">{item.lokasi}</p>}
+                  </div>
+                  <div class="col-start-2 sm:col-start-3 sm:justify-self-end">
+                    <ActivityBadge jenis={item.jenis} />
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

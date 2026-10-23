@@ -1,0 +1,51 @@
+---
+import { tentang } from '../data/about';
+import ActivityBadge from './ActivityBadge.astro';
+import PhotoPlaceholder from './PhotoPlaceholder.astro';
+import SectionHeader from './SectionHeader.astro';
+---
+
+<section id="tentang" class="scroll-mt-24 py-24 sm:py-28 lg:py-32">
+  <div class="container-page grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+    <div>
+      <SectionHeader eyebrow={tentang.eyebrow} title={tentang.judul} titleId="tentang-judul" />
+
+      <div class="mt-6 space-y-4 text-base leading-relaxed text-fg-muted">
+        {tentang.paragraf.map((paragraf) => <p>{paragraf}</p>)}
+      </div>
+
+      <div class="mt-8 flex flex-wrap gap-2">
+        <span class="rounded-pill border border-line bg-surface px-3 py-1.5 text-xs font-medium text-fg">
+          5 hari
+        </span>
+        <span class="rounded-pill border border-line bg-surface px-3 py-1.5 text-xs font-medium text-fg">
+          2 kunjungan industri
+        </span>
+        <span class="rounded-pill border border-line bg-surface px-3 py-1.5 text-xs font-medium text-fg">
+          Semarang - Bali
+        </span>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      {
+        tentang.jalur.map((jalur, index) => (
+          <article class="rounded-xl border border-line bg-surface p-6">
+            <div class="flex items-center justify-between gap-4">
+              <span class="font-mono text-xs text-fg-subtle">{String(index + 1).padStart(2, '0')}</span>
+              <ActivityBadge jenis={jalur.kategori === 'industri' ? 'kunjungan' : 'budaya'} />
+            </div>
+            <h3 class="mt-4 text-h4 text-fg">{jalur.judul}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-fg-muted">{jalur.deskripsi}</p>
+          </article>
+        ))
+      }
+
+      <PhotoPlaceholder
+        label="Suasana perjalanan KKL"
+        kategori="perjalanan"
+        className="aspect-[16/9] w-full rounded-xl border border-line"
+      />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+---
+interface Props {
+  label: string;
+  kategori?: string;
+  className?: string;
+}
+
+const { label, kategori = 'default', className = '' } = Astro.props;
+
+const icons: Record<string, string> = {
+  industri: 'M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5M9 10h.01M15 10h.01',
+  wisata: 'M3 20h18L14 9l-3 5-2-3-6 9ZM17 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z',
+  budaya:
+    'M12 3c4.5 0 7 2.5 7 6v5c0 4.5-3 7-7 7s-7-2.5-7-7V9c0-3.5 2.5-6 7-6Zm-3 5h.01M15 8h.01M9 14c1.8 2 4.2 2 6 0',
+  belanja: 'M6 8h12l1 13H5L6 8Zm3 0V6a3 3 0 0 1 6 0v2',
+  kuliner: 'M7 3v8M4 3v5a3 3 0 0 0 6 0V3M7 11v10M17 3v18M17 3c2 2 3 4 3 7h-3',
+  perjalanan: 'M4 15l2 5h12l2-5M6 15V9h12v6M9 9V5h6v4M3 15h18',
+  default:
+    'M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Zm0-8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z',
+};
+
+const icon = icons[kategori] ?? icons.default;
+const gradient =
+  'radial-gradient(circle at 20% 20%, rgb(217 241 138 / 0.55), transparent 55%), radial-gradient(circle at 80% 80%, rgb(74 103 65 / 0.14), transparent 60%)';
+---
+
+<div
+  class={`relative flex items-center justify-center overflow-hidden bg-brand-subtle ${className}`}
+  role="img"
+  aria-label={`Ilustrasi ${label}`}
+>
+  <div class="absolute inset-0" style={`background-image: ${gradient};`} aria-hidden="true"></div>
+  <svg
+    class="relative h-16 w-16 text-brand/45"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d={icon}></path>
+  </svg>
+  <span
+    class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] truncate rounded-pill bg-canvas/85 px-3 py-1 text-xs font-medium text-fg backdrop-blur-sm"
+  >
+    {label}
+  </span>
+</div>

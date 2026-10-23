@@ -1,0 +1,108 @@
+---
+import { catatanIndustri } from '../data/industry-notes';
+import { destinasi } from '../data/destinations';
+import PhotoPlaceholder from './PhotoPlaceholder.astro';
+import SectionHeader from './SectionHeader.astro';
+
+const galeriSementara = [
+  { label: 'Kunjungan industri', kategori: 'industri' },
+  { label: 'Perjalanan', kategori: 'perjalanan' },
+  { label: 'Kebersamaan', kategori: 'budaya' },
+];
+---
+
+<section id="dokumentasi" class="scroll-mt-24 py-24 sm:py-28 lg:py-32">
+  <div class="container-page">
+    <SectionHeader
+      eyebrow="Dokumentasi"
+      title="Catatan belajar dari lapangan"
+      description="Rangkuman hal yang diamati selama kunjungan industri. Bagian ini akan dilengkapi dengan hasil tanya jawab dan refleksi kelompok setelah kegiatan."
+      titleId="dokumentasi-judul"
+    />
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-2">
+      {
+        catatanIndustri.map((catatan) => {
+          const tempat = destinasi.find((item) => item.id === catatan.destinasiId);
+
+          return (
+            <article
+              id={`catatan-${catatan.destinasiId}`}
+              class="flex scroll-mt-24 flex-col rounded-xl border border-line bg-canvas p-6 sm:p-8"
+            >
+              <div class="flex items-center justify-between gap-4">
+                <p class="text-label uppercase text-brand">Kunjungan industri</p>
+                <span class="rounded-pill border border-warning/30 bg-warning-subtle px-2.5 py-1 text-[11px] font-medium text-fg">
+                  Draf
+                </span>
+              </div>
+
+              <h3 class="mt-3 text-h3 text-fg">{tempat?.nama ?? catatan.destinasiId}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-fg-muted">{catatan.profil}</p>
+
+              <div class="mt-6 grid gap-6 sm:grid-cols-2">
+                <div>
+                  <h4 class="text-sm font-semibold text-fg">Yang diamati</h4>
+                  <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-fg-muted marker:text-brand">
+                    {catatan.yangDiamati.map((item) => <li>{item}</li>)}
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="text-sm font-semibold text-fg">Teknologi</h4>
+                  <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-fg-muted marker:text-brand">
+                    {catatan.teknologi.map((item) => <li>{item}</li>)}
+                  </ul>
+                </div>
+              </div>
+
+              <div class="mt-6 border-t border-line pt-6">
+                <h4 class="text-sm font-semibold text-fg">Tanya jawab</h4>
+                <div class="mt-3 space-y-4">
+                  {catatan.tanyaJawab.map((qa) => (
+                    <div>
+                      <p class="text-sm font-medium text-fg">
+                        <span class="text-brand">T: </span>
+                        {qa.tanya}
+                      </p>
+                      <p class="mt-1 text-sm leading-relaxed text-fg-muted">
+                        <span class="font-medium text-fg">J: </span>
+                        {qa.jawab}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div class="mt-6 rounded-lg bg-surface p-4">
+                <p class="text-label uppercase text-fg-subtle">Refleksi</p>
+                <p class="mt-2 text-sm leading-relaxed text-fg-muted">{catatan.refleksi}</p>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+
+    <div class="mt-14">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-label uppercase text-brand">Galeri</p>
+          <h3 class="mt-2 text-h3 text-fg">Potongan perjalanan</h3>
+        </div>
+        <p class="text-sm text-fg-muted">Foto menyusul setelah kegiatan.</p>
+      </div>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-3">
+        {
+          galeriSementara.map((item) => (
+            <PhotoPlaceholder
+              label={item.label}
+              kategori={item.kategori}
+              className="aspect-[4/3] w-full rounded-xl border border-line"
+            />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

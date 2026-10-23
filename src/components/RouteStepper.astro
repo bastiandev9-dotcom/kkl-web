@@ -1,0 +1,69 @@
+---
+import { rute, type JenisRute } from '../data/route';
+import SectionHeader from './SectionHeader.astro';
+
+const dotClass: Record<JenisRute, string> = {
+  awal: 'border-brand bg-brand text-on-brand',
+  kota: 'border-brand/25 bg-brand-subtle text-brand',
+  pelabuhan: 'border-brand bg-canvas text-brand',
+  tujuan: 'border-accent-hover bg-accent text-fg',
+  akhir: 'border-brand bg-brand text-on-brand',
+};
+
+const jenisLabel: Record<JenisRute, string> = {
+  awal: 'Mulai',
+  kota: 'Kota transit',
+  pelabuhan: 'Pelabuhan',
+  tujuan: 'Destinasi',
+  akhir: 'Selesai',
+};
+---
+
+<section id="rute" class="scroll-mt-24 py-24 sm:py-28 lg:py-32">
+  <div class="container-page">
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <SectionHeader
+        eyebrow="Perjalanan"
+        title="Dari Semarang ke Bali"
+        description="Rute darat dan penyeberangan Selat Bali yang menghubungkan kampus dengan destinasi kegiatan."
+        titleId="rute-judul"
+      />
+      <p class="shrink-0 rounded-pill border border-line bg-surface px-4 py-2 text-xs font-medium text-fg-muted">
+        9 titik perjalanan
+      </p>
+    </div>
+
+    <ol class="mt-12 grid gap-0 lg:grid-cols-9">
+      {
+        rute.map((langkah, index) => (
+          <li class="relative pb-8 pl-12 last:pb-0 lg:pb-0 lg:pl-0 lg:text-center">
+            <span
+              class={`absolute left-0 top-0 z-10 grid h-9 w-9 place-items-center rounded-full border text-[10px] font-medium tabular-nums lg:left-1/2 lg:-translate-x-1/2 ${dotClass[langkah.jenis]}`}
+              aria-hidden="true"
+            >
+              {String(index + 1).padStart(2, '0')}
+            </span>
+
+            {index < rute.length - 1 && (
+              <span
+                class="absolute left-[1.125rem] top-9 h-[calc(100%-1.125rem)] w-px bg-line lg:left-1/2 lg:top-[1.125rem] lg:h-px lg:w-full"
+                aria-hidden="true"
+              />
+            )}
+
+            <div class="lg:pt-14">
+              <p class="text-label uppercase text-fg-subtle">{jenisLabel[langkah.jenis]}</p>
+              <h3 class="mt-1 text-h4 text-fg">{langkah.label}</h3>
+              <p class="mt-1 text-sm text-fg-muted">{langkah.detail}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="mt-10 border-t border-line pt-6 text-sm leading-relaxed text-fg-muted">
+      Rangkaian perjalanan mencakup lima hari, dua kunjungan industri, dan penyeberangan
+      Ketapang-Gilimanuk.
+    </p>
+  </div>
+</section>

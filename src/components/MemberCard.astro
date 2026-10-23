@@ -1,0 +1,24 @@
+---
+import type { Anggota } from '../data/members';
+import { initials } from '../lib/format';
+
+interface Props {
+  anggota: Anggota;
+}
+
+const { anggota } = Astro.props;
+---
+
+<article class="flex items-center gap-4 rounded-xl border border-line bg-canvas p-5">
+  <span
+    class="grid h-12 w-12 shrink-0 place-items-center rounded-pill bg-brand-subtle text-sm font-semibold text-brand"
+    aria-hidden="true"
+  >
+    {initials(anggota.nama)}
+  </span>
+  <div class="min-w-0">
+    <h3 class="truncate text-sm font-semibold text-fg">{anggota.nama}</h3>
+    <p class="mt-0.5 text-xs tabular-nums text-fg-muted">{anggota.nim}</p>
+    <p class="mt-1 text-xs font-medium text-brand">{anggota.peran}</p>
+  </div>
+</article>

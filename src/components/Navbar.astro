@@ -2,58 +2,56 @@
 import { navigation } from '../data/navigation';
 import { site } from '../data/site';
 import MobileMenu from './vue/MobileMenu.vue';
+
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const activeHref =
+  navigation.find((link) =>
+    link.href === '/' ? pathname === '/' : pathname === link.href || pathname.startsWith(`${link.href}/`),
+  )?.href ?? '';
 ---
 
-<header class="sticky top-0 z-40 border-b border-line/70 bg-canvas/90 backdrop-blur-xl">
-  <div class="container-page flex h-20 items-center justify-between gap-4">
-    <a
-      href="#beranda"
-      class="flex shrink-0 items-center gap-2 rounded-xl py-1 focus-visible:outline-offset-4"
-      aria-label={`${site.brand} - beranda`}
-    >
-      <span class="text-xl font-black tracking-[0.08em] text-brand sm:text-2xl">{site.brand}</span>
-      <span class="hidden rounded-full border border-line bg-surface px-2 py-0.5 text-[10px] font-semibold tracking-wide text-fg-muted sm:inline">
-        2026
-      </span>
+<header class="sticky top-0 z-50 border-b border-neutral-200/60 bg-[#fafaf4]/90 backdrop-blur-md">
+  <nav
+    class="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-6 lg:px-12"
+    aria-label="Navigasi utama"
+  >
+    <a href="/" class="flex shrink-0 items-center rounded-lg py-1" aria-label={`${site.brand} - beranda`}>
+      <span class="text-xl font-black tracking-wider text-brand md:text-2xl">{site.brand}</span>
     </a>
 
-    <nav class="hidden lg:block" aria-label="Navigasi utama">
-      <ul class="flex items-center gap-0.5">
-        {
-          navigation.map((link, index) => (
-            <li>
-              <a
-                href={link.href}
-                data-nav-link
-                aria-current={index === 0 ? 'page' : undefined}
-                class:list={[
-                  'block rounded-full px-4 py-2.5 text-sm font-medium transition-colors hover:bg-fg/5',
-                  index === 0 ? 'bg-brand-subtle text-brand' : 'text-fg-muted',
-                ]}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+    <ul class="hidden items-center gap-1 text-sm font-medium lg:flex">
+      {
+        navigation.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={activeHref === link.href ? 'page' : undefined}
+              class:list={[
+                'block rounded-full px-4 py-2 transition-all xl:px-5',
+                activeHref === link.href
+                  ? 'bg-[#dbe8d8] font-semibold text-brand'
+                  : 'text-neutral-600 hover:bg-black/5 hover:text-brand',
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
 
-    <div class="hidden shrink-0 lg:block">
+    <div class="hidden shrink-0 items-center gap-3 lg:flex">
       <a
-        href="#model-3d"
-        class="inline-flex items-center gap-2 rounded-full border border-fg/15 bg-surface px-5 py-2.5 text-sm font-medium text-fg shadow-xs transition-colors hover:border-brand/40 hover:text-brand"
+        href="/jadwal-perjalanan"
+        class="rounded-full border border-neutral-300 px-6 py-2.5 text-sm font-medium text-neutral-800 transition-all hover:border-brand hover:bg-brand/5 hover:text-brand"
       >
-        Jelajah 3D
-        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-          <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
+        Lihat Jadwal
       </a>
     </div>
 
     <button
       type="button"
-      class="grid h-11 w-11 place-items-center rounded-full border border-line bg-surface text-fg lg:hidden"
+      class="grid h-11 w-11 place-items-center rounded-full border border-neutral-300 bg-white text-neutral-800 lg:hidden"
       aria-label="Buka menu"
       aria-controls="menu-seluler"
       aria-expanded="false"
@@ -71,63 +69,7 @@ import MobileMenu from './vue/MobileMenu.vue';
         <path d="M4 7h16M4 12h16M4 17h16"></path>
       </svg>
     </button>
-  </div>
+  </nav>
 </header>
 
-<MobileMenu client:load links={navigation} />
-
-<script>
-  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
-  const items = links.flatMap((link) => {
-    const target = document.querySelector<HTMLElement>(link.hash);
-    return target ? [{ link, target }] : [];
-  });
-  let frame = 0;
-
-  function updateActive() {
-    if (!items.length) {
-      return;
-    }
-
-    const offset = window.scrollY + 140;
-    let active = items[0];
-    let activeTop = -1;
-
-    for (const item of items) {
-      const top = item.target.getBoundingClientRect().top + window.scrollY;
-
-      if (top <= offset && top > activeTop) {
-        active = item;
-        activeTop = top;
-      }
-    }
-
-    for (const item of items) {
-      const selected = item === active;
-      item.link.classList.toggle('bg-brand-subtle', selected);
-      item.link.classList.toggle('text-brand', selected);
-      item.link.classList.toggle('text-fg-muted', !selected);
-
-      if (selected) {
-        item.link.setAttribute('aria-current', 'page');
-      } else {
-        item.link.removeAttribute('aria-current');
-      }
-    }
-  }
-
-  function onScroll() {
-    if (frame) {
-      return;
-    }
-
-    frame = window.requestAnimationFrame(() => {
-      frame = 0;
-      updateActive();
-    });
-  }
-
-  updateActive();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
-</script>
+<MobileMenu client:load links={navigation} activeHref={activeHref} />

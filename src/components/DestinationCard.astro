@@ -1,10 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import type { Destinasi, KategoriDestinasi } from '../data/destinations';
-import type { JenisKegiatan } from '../data/agenda';
 import { formatHari } from '../lib/format';
 import { resolvePhoto } from '../lib/images';
-import ActivityBadge from './ActivityBadge.astro';
 import PhotoPlaceholder from './PhotoPlaceholder.astro';
 
 interface Props {
@@ -13,22 +11,21 @@ interface Props {
 
 const { destinasi } = Astro.props;
 const photo = resolvePhoto(destinasi.foto);
-const jenisMap: Record<KategoriDestinasi, JenisKegiatan> = {
-  industri: 'kunjungan',
-  wisata: 'wisata',
-  budaya: 'budaya',
-  belanja: 'belanja',
-  kuliner: 'makan',
-  perjalanan: 'perjalanan',
+const kategoriLabel: Record<KategoriDestinasi, string> = {
+  industri: 'Kunjungan industri',
+  wisata: 'Wisata',
+  budaya: 'Budaya',
+  belanja: 'Belanja',
+  kuliner: 'Kuliner',
+  perjalanan: 'Perjalanan',
 };
-const jenis = jenisMap[destinasi.kategori];
 ---
 
 <article
   id={`destinasi-${destinasi.id}`}
-  class="group scroll-mt-24 overflow-hidden rounded-xl border border-line bg-canvas transition-transform duration-200 hover:-translate-y-0.5"
+  class="group flex scroll-mt-24 flex-col overflow-hidden rounded-3xl border border-line bg-canvas shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-brand/25 hover:shadow-xl"
 >
-  <div class="aspect-[4/3] overflow-hidden">
+  <div class="relative aspect-[4/3] overflow-hidden">
     {
       photo ? (
         <Image
@@ -37,28 +34,45 @@ const jenis = jenisMap[destinasi.kategori];
           widths={[400, 720]}
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           loading="lazy"
-          class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+          class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
         />
       ) : (
         <PhotoPlaceholder
           label={destinasi.nama}
           kategori={destinasi.kategori}
-          className="h-full w-full"
+          showLabel={false}
+          className="h-full w-full transition-transform duration-500 group-hover:scale-[1.04]"
         />
       )
     }
+    <span class="absolute left-4 top-4 rounded-full border border-white/50 bg-white/85 px-3 py-1 text-[11px] font-semibold text-fg backdrop-blur-md">
+      {kategoriLabel[destinasi.kategori]}
+    </span>
   </div>
-  <div class="p-6">
-    <div class="flex flex-wrap items-center gap-2">
-      <ActivityBadge jenis={jenis} />
-      <span class="text-xs text-fg-muted">{formatHari(destinasi.hari)}</span>
+
+  <div class="flex flex-1 flex-col p-6">
+    <div class="flex items-center justify-between gap-4 text-xs text-fg-muted">
+      <span class="flex items-center gap-1.5 font-medium">
+        <svg class="h-3.5 w-3.5 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="16" rx="3"></rect>
+          <path d="M8 3v4M16 3v4M3 10h18" stroke-linecap="round"></path>
+        </svg>
+        {formatHari(destinasi.hari)}
+      </span>
+      {destinasi.model3d && (
+        <span class="rounded-full bg-brand/5 px-2.5 py-1 text-[10px] font-semibold text-brand">
+          3D
+        </span>
+      )}
     </div>
+
     <h3 class="mt-3 text-h4 text-fg">{destinasi.nama}</h3>
     <p class="mt-2 text-sm leading-relaxed text-fg-muted">{destinasi.deskripsi}</p>
+
     {
       destinasi.catatanBelajar && (
-        <p class="mt-4 border-t border-line pt-4 text-sm leading-relaxed text-fg-muted">
-          <span class="font-medium text-fg">Catatan belajar: </span>
+        <p class="mt-auto border-t border-line/80 pt-4 text-xs leading-relaxed text-fg-muted">
+          <span class="font-semibold text-fg">Catatan belajar: </span>
           {destinasi.catatanBelajar}
         </p>
       )

@@ -1,32 +1,32 @@
 ---
 import { info } from '../data/info';
 import { site } from '../data/site';
-import SectionHeader from './SectionHeader.astro';
 ---
 
-<section id="info" class="scroll-mt-24 py-24 sm:py-28 lg:py-32">
+<section id="info" class="scroll-mt-24 border-y border-line/70 bg-surface py-20 sm:py-24">
   <div class="container-page grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
     <div>
-      <SectionHeader
-        eyebrow="Informasi"
-        title="Bekal sebelum berangkat"
-        description="Informasi praktis yang perlu diketahui peserta sebelum mengikuti rangkaian KKL."
-        titleId="info-judul"
-      />
+      <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-brand">Informasi</p>
+      <h2 id="info-judul" class="mt-2 text-h2 text-fg">Bekal sebelum berangkat</h2>
+      <p class="mt-3 max-w-xl text-sm leading-relaxed text-fg-muted sm:text-base">
+        Informasi praktis yang perlu diketahui peserta sebelum mengikuti rangkaian KKL.
+      </p>
 
-      <div class="mt-8 rounded-xl border border-line bg-surface p-6">
-        <p class="text-label uppercase text-fg-subtle">{info.titikKumpul.label}</p>
+      <div class="mt-8 rounded-3xl border border-line bg-canvas p-6 shadow-soft">
+        <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-fg-subtle">
+          {info.titikKumpul.label}
+        </p>
         <p class="mt-2 text-h4 text-fg">{info.titikKumpul.nilai}</p>
         <p class="mt-1 text-sm text-fg-muted">{info.titikKumpul.detail}</p>
       </div>
 
-      <div class="mt-4 rounded-xl border border-line bg-surface p-6">
-        <p class="text-label uppercase text-fg-subtle">Akomodasi</p>
+      <div class="mt-4 rounded-3xl border border-line bg-canvas p-6 shadow-soft">
+        <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-fg-subtle">Akomodasi</p>
         <ul class="mt-3 space-y-3">
           {
             info.hotel.map((hotel) => (
               <li class="flex flex-col gap-0.5">
-                <span class="text-sm font-medium text-fg">{hotel.nama}</span>
+                <span class="text-sm font-semibold text-fg">{hotel.nama}</span>
                 <span class="text-xs text-fg-muted">{hotel.detail}</span>
               </li>
             ))
@@ -43,9 +43,9 @@ import SectionHeader from './SectionHeader.astro';
       <ul class="mt-5 grid gap-3 sm:grid-cols-2">
         {
           info.tips.map((tip, index) => (
-            <li class="flex gap-3 rounded-lg border border-line bg-canvas p-4">
+            <li class="flex gap-3 rounded-2xl border border-line bg-canvas p-4">
               <span
-                class="grid h-6 w-6 shrink-0 place-items-center rounded-pill bg-brand-subtle text-[10px] font-semibold text-brand"
+                class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand/10 text-[10px] font-bold text-brand"
                 aria-hidden="true"
               >
                 {String(index + 1).padStart(2, '0')}
@@ -56,7 +56,7 @@ import SectionHeader from './SectionHeader.astro';
         }
       </ul>
 
-      <p class="mt-6 rounded-lg border border-warning/30 bg-warning-subtle p-4 text-sm leading-relaxed text-fg">
+      <p class="mt-6 rounded-2xl border border-warning/30 bg-warning-subtle p-4 text-sm leading-relaxed text-fg">
         {info.catatan}
       </p>
     </div>

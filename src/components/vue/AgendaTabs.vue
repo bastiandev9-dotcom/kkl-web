@@ -46,7 +46,7 @@ function onKeydown(event: KeyboardEvent, index: number) {
 </script>
 
 <template>
-  <div ref="tabList" class="grid grid-cols-5 gap-1.5 sm:gap-2" role="tablist" aria-label="Pilih hari agenda">
+  <div ref="tabList" class="grid grid-cols-5 gap-1.5 sm:gap-2.5" role="tablist" aria-label="Pilih hari agenda">
     <button
       v-for="(day, index) in days"
       :id="`tab-hari-${day.nomor}`"
@@ -57,19 +57,19 @@ function onKeydown(event: KeyboardEvent, index: number) {
       :aria-controls="`panel-hari-${day.nomor}`"
       :tabindex="active === day.nomor ? 0 : -1"
       :class="[
-        'rounded-lg border px-1.5 py-2.5 text-center transition-colors sm:px-3 sm:py-3',
+        'rounded-2xl border px-1.5 py-3 text-center transition-all duration-200 sm:px-3 sm:py-4',
         active === day.nomor
-          ? 'border-brand bg-brand text-on-brand'
-          : 'border-line bg-canvas text-fg-muted hover:bg-surface hover:text-fg',
+          ? 'border-brand bg-brand text-on-brand shadow-md'
+          : 'border-line bg-canvas text-fg-muted hover:-translate-y-0.5 hover:border-brand/30 hover:text-brand',
       ]"
       @click="active = day.nomor"
       @keydown="onKeydown($event, index)"
     >
-      <span class="block text-[10px] uppercase tracking-wider sm:text-xs">
+      <span class="block text-[10px] font-semibold uppercase tracking-wider sm:text-xs">
         Hari {{ roman(day.nomor) }}
       </span>
-      <span class="mt-1 block text-xs font-medium sm:text-sm">{{ day.hariLabel }}</span>
-      <span class="mt-0.5 block text-[10px] opacity-80 sm:text-[11px]">{{ day.tanggal }}</span>
+      <span class="mt-1 block text-xs font-semibold sm:text-sm">{{ day.hariLabel }}</span>
+      <span class="mt-0.5 block text-[10px] opacity-75 sm:text-[11px]">{{ day.tanggal }}</span>
     </button>
   </div>
 
@@ -81,22 +81,22 @@ function onKeydown(event: KeyboardEvent, index: number) {
     role="tabpanel"
     :aria-labelledby="`tab-hari-${day.nomor}`"
     tabindex="0"
-    class="mt-6 scroll-mt-24 overflow-hidden rounded-xl border border-line bg-canvas"
+    class="mt-6 scroll-mt-24 overflow-hidden rounded-3xl border border-line bg-canvas shadow-soft"
   >
-    <header class="flex flex-col gap-3 border-b border-line bg-surface px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <header class="flex flex-col gap-3 border-b border-line bg-surface px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7">
       <div class="flex items-center gap-4">
         <span
-          class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-brand font-mono text-sm text-on-brand"
+          class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand font-mono text-sm text-on-brand"
           aria-hidden="true"
         >
           {{ String(day.nomor).padStart(2, '0') }}
         </span>
         <div>
-          <p class="text-label uppercase text-brand">{{ day.judul }}</p>
+          <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand">{{ day.judul }}</p>
           <h3 class="mt-1 text-h4 text-fg">{{ day.hariLabel }}</h3>
         </div>
       </div>
-      <span class="self-start rounded-pill border border-line bg-canvas px-3 py-1 text-xs font-medium text-fg-muted sm:self-auto">
+      <span class="self-start rounded-full border border-line bg-canvas px-3 py-1 text-xs font-medium text-fg-muted sm:self-auto">
         {{ day.zona }}
       </span>
     </header>
@@ -105,9 +105,9 @@ function onKeydown(event: KeyboardEvent, index: number) {
       <li
         v-for="(item, itemIndex) in day.item"
         :key="`${day.nomor}-${itemIndex}`"
-        class="grid grid-cols-[5.25rem_1fr] gap-x-3 gap-y-2 px-5 py-4 sm:grid-cols-[7rem_1fr_auto] sm:items-start sm:px-6"
+        class="grid grid-cols-[5.25rem_1fr] gap-x-3 gap-y-2 px-5 py-4 transition-colors hover:bg-surface/60 sm:grid-cols-[7rem_1fr_auto] sm:items-start sm:px-7"
       >
-        <span class="whitespace-nowrap pt-0.5 text-[13px] font-medium tabular-nums text-fg sm:text-sm">
+        <span class="whitespace-nowrap pt-0.5 text-[13px] font-semibold tabular-nums text-brand sm:text-sm">
           {{ item.jam }}
         </span>
         <div class="min-w-0">

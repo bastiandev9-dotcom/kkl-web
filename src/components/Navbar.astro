@@ -1,37 +1,35 @@
 ---
+import { navigation } from '../data/navigation';
+import { site } from '../data/site';
 import MobileMenu from './vue/MobileMenu.vue';
-
-const links = [
-  { href: '#tentang', label: 'Tentang' },
-  { href: '#agenda', label: 'Agenda' },
-  { href: '#rute', label: 'Rute' },
-  { href: '#destinasi', label: 'Destinasi' },
-  { href: '#dokumentasi', label: 'Dokumentasi' },
-  { href: '#anggota', label: 'Anggota' },
-  { href: '#info', label: 'Info' },
-];
 ---
 
-<header class="sticky top-0 z-40 border-b border-line/80 bg-canvas/85 backdrop-blur-lg">
-  <div class="container-page flex h-16 items-center justify-between gap-4">
-    <a href="#beranda" class="flex items-center gap-3" aria-label="KKL Bali Informatika 2026 — beranda">
-      <span class="grid h-9 w-9 place-items-center rounded-md bg-brand text-xs font-semibold tracking-wide text-on-brand">
-        KKL
-      </span>
-      <span class="leading-tight">
-        <span class="block text-sm font-semibold text-fg">KKL Bali 2026</span>
-        <span class="block text-[11px] text-fg-muted">Informatika UPGRIS</span>
+<header class="sticky top-0 z-40 border-b border-line/70 bg-canvas/90 backdrop-blur-xl">
+  <div class="container-page flex h-20 items-center justify-between gap-4">
+    <a
+      href="#beranda"
+      class="flex shrink-0 items-center gap-2 rounded-xl py-1 focus-visible:outline-offset-4"
+      aria-label={`${site.brand} - beranda`}
+    >
+      <span class="text-xl font-black tracking-[0.08em] text-brand sm:text-2xl">{site.brand}</span>
+      <span class="hidden rounded-full border border-line bg-surface px-2 py-0.5 text-[10px] font-semibold tracking-wide text-fg-muted sm:inline">
+        2026
       </span>
     </a>
 
     <nav class="hidden lg:block" aria-label="Navigasi utama">
-      <ul class="flex items-center gap-1">
+      <ul class="flex items-center gap-0.5">
         {
-          links.map((link) => (
+          navigation.map((link, index) => (
             <li>
               <a
                 href={link.href}
-                class="rounded-md px-3 py-2 text-sm font-medium text-fg-muted transition-colors hover:bg-surface hover:text-fg"
+                data-nav-link
+                aria-current={index === 0 ? 'page' : undefined}
+                class:list={[
+                  'block rounded-full px-4 py-2.5 text-sm font-medium transition-colors hover:bg-fg/5',
+                  index === 0 ? 'bg-brand-subtle text-brand' : 'text-fg-muted',
+                ]}
               >
                 {link.label}
               </a>
@@ -41,18 +39,21 @@ const links = [
       </ul>
     </nav>
 
-    <div class="hidden lg:block">
+    <div class="hidden shrink-0 lg:block">
       <a
-        href="#agenda"
-        class="inline-flex items-center rounded-pill bg-brand px-4 py-2.5 text-sm font-medium text-on-brand transition-colors hover:bg-brand-hover"
+        href="#model-3d"
+        class="inline-flex items-center gap-2 rounded-full border border-fg/15 bg-surface px-5 py-2.5 text-sm font-medium text-fg shadow-xs transition-colors hover:border-brand/40 hover:text-brand"
       >
-        Lihat agenda
+        Jelajah 3D
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
       </a>
     </div>
 
     <button
       type="button"
-      class="grid h-10 w-10 place-items-center rounded-md border border-line text-fg lg:hidden"
+      class="grid h-11 w-11 place-items-center rounded-full border border-line bg-surface text-fg lg:hidden"
       aria-label="Buka menu"
       aria-controls="menu-seluler"
       aria-expanded="false"
@@ -73,4 +74,60 @@ const links = [
   </div>
 </header>
 
-<MobileMenu client:load links={links} />
+<MobileMenu client:load links={navigation} />
+
+<script>
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
+  const items = links.flatMap((link) => {
+    const target = document.querySelector<HTMLElement>(link.hash);
+    return target ? [{ link, target }] : [];
+  });
+  let frame = 0;
+
+  function updateActive() {
+    if (!items.length) {
+      return;
+    }
+
+    const offset = window.scrollY + 140;
+    let active = items[0];
+    let activeTop = -1;
+
+    for (const item of items) {
+      const top = item.target.getBoundingClientRect().top + window.scrollY;
+
+      if (top <= offset && top > activeTop) {
+        active = item;
+        activeTop = top;
+      }
+    }
+
+    for (const item of items) {
+      const selected = item === active;
+      item.link.classList.toggle('bg-brand-subtle', selected);
+      item.link.classList.toggle('text-brand', selected);
+      item.link.classList.toggle('text-fg-muted', !selected);
+
+      if (selected) {
+        item.link.setAttribute('aria-current', 'page');
+      } else {
+        item.link.removeAttribute('aria-current');
+      }
+    }
+  }
+
+  function onScroll() {
+    if (frame) {
+      return;
+    }
+
+    frame = window.requestAnimationFrame(() => {
+      frame = 0;
+      updateActive();
+    });
+  }
+
+  updateActive();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+</script>

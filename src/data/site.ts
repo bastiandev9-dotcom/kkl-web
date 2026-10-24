@@ -1,7 +1,9 @@
 export const site = {
-  title: 'KKL Bali Informatika 2026',
+  brand: 'KARYAWISATA',
+  tagline: 'Jelajah Wawasan & Pesona Dewata',
+  title: 'KARYAWISATA - Jelajah Wawasan & Pesona Dewata',
   description:
-    'Dokumentasi Kuliah Kerja Lapangan Prodi Informatika UPGRIS ke Bali, 18-22 Agustus 2026.',
+    'Dokumentasi Kuliah Kerja Lapangan Prodi Informatika UPGRIS ke Bali, 18-22 Agustus 2026: belajar dari industri, menjelajah destinasi, dan mengenal budaya setempat.',
   prodi: 'Prodi Informatika',
   kelompok: 'Kelompok KKL Informatika 2026',
   kampus: 'Universitas PGRI Semarang',

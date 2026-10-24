@@ -25,13 +25,50 @@ let animationFrame = 0;
 let lastTime = 0;
 let targetTiltX = 0;
 let targetTiltZ = 0;
+let dragging = false;
+let dragPointerId: number | undefined;
+let lastPointerX = 0;
+let lastPointerY = 0;
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
+function renderIfIdle() {
+  if (scene && (reduceMotion || !running)) {
+    scene.render();
+  }
+}
+
+function onPointerDown(event: PointerEvent) {
+  if (!scene || status.value !== 'ready') {
+    return;
+  }
+
+  dragging = true;
+  dragPointerId = event.pointerId;
+  lastPointerX = event.clientX;
+  lastPointerY = event.clientY;
+  (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+}
+
 function onPointerMove(event: PointerEvent) {
-  if (!scene || status.value !== 'ready' || reduceMotion || event.pointerType === 'touch') {
+  if (!scene || status.value !== 'ready') {
+    return;
+  }
+
+  if (dragging) {
+    const deltaX = event.clientX - lastPointerX;
+    const deltaY = event.clientY - lastPointerY;
+    lastPointerX = event.clientX;
+    lastPointerY = event.clientY;
+    scene.spin.rotation.y += deltaX * 0.012;
+    targetTiltX = clamp(targetTiltX + deltaY * 0.003, -0.18, 0.18);
+    renderIfIdle();
+    return;
+  }
+
+  if (reduceMotion || event.pointerType === 'touch') {
     return;
   }
 
@@ -48,7 +85,26 @@ function onPointerMove(event: PointerEvent) {
   targetTiltX = clamp(y * 0.1, -0.14, 0.14);
 }
 
+function endDrag(event: PointerEvent) {
+  if (!dragging || event.pointerId !== dragPointerId) {
+    return;
+  }
+
+  dragging = false;
+  dragPointerId = undefined;
+
+  if ((event.currentTarget as HTMLElement).hasPointerCapture(event.pointerId)) {
+    (event.currentTarget as HTMLElement).releasePointerCapture(event.pointerId);
+  }
+
+  renderIfIdle();
+}
+
 function resetTilt() {
+  if (dragging) {
+    return;
+  }
+
   targetTiltX = 0;
   targetTiltZ = 0;
 }
@@ -63,7 +119,11 @@ function tick(time: number) {
   lastTime = time;
 
   const ease = 1 - Math.exp(-delta * 6);
-  scene.spin.rotation.y += delta * 0.15;
+
+  if (!dragging) {
+    scene.spin.rotation.y += delta * 0.15;
+  }
+
   scene.tilt.rotation.x += (targetTiltX - scene.tilt.rotation.x) * ease;
   scene.tilt.rotation.z += (targetTiltZ - scene.tilt.rotation.z) * ease;
   scene.render();
@@ -237,15 +297,18 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    class="relative aspect-square w-full overflow-hidden rounded-2xl border border-line bg-[radial-gradient(circle_at_50%_38%,#f8faf6_0%,#eef3ed_58%,#dfeadd_100%)]"
+    class="relative aspect-square w-full touch-pan-y overflow-hidden rounded-[2rem] border border-line/80 bg-[radial-gradient(circle_at_50%_35%,#ffffff_0%,#f4f6ee_55%,#e7eedf_100%)] shadow-floating"
     :data-status="status"
     aria-hidden="true"
   >
     <div
       ref="host"
-      class="absolute inset-0 transition-opacity duration-300"
+      class="absolute inset-0 cursor-grab touch-pan-y transition-opacity duration-300 active:cursor-grabbing"
       :class="status === 'ready' ? 'opacity-100' : 'opacity-0'"
+      @pointerdown="onPointerDown"
       @pointermove="onPointerMove"
+      @pointerup="endDrag"
+      @pointercancel="endDrag"
       @pointerleave="resetTilt"
     ></div>
 
@@ -264,6 +327,20 @@ onBeforeUnmount(() => {
     >
       Ilustrasi 2D
     </span>
+
+    <div
+      v-if="status === 'ready'"
+      class="pointer-events-none absolute bottom-4 left-1/2 z-10 -translate-x-1/2"
+    >
+      <span
+        class="flex items-center gap-1.5 whitespace-nowrap rounded-full bg-fg/75 px-3.5 py-1.5 text-[11px] font-medium text-white shadow-md backdrop-blur-md"
+      >
+        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M8 11V7a2 2 0 0 1 4 0v4M12 11V5a2 2 0 0 1 4 0v6M16 11V8a2 2 0 0 1 4 0v6a7 7 0 0 1-7 7h-1a6 6 0 0 1-5.2-3L4 13a2 2 0 0 1 3.4-2.1L8 12" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        Drag untuk rotasi 360°
+      </span>
+    </div>
 
     <div v-if="status === 'loading'" class="absolute inset-0 grid place-items-center">
       <div class="px-6 text-center">

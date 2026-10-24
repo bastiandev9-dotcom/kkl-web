@@ -68,14 +68,16 @@ watch(open, async (value) => {
     aria-modal="true"
     aria-label="Menu navigasi"
   >
-    <div class="absolute inset-0 bg-fg/30 backdrop-blur-sm" aria-hidden="true" @click="close"></div>
-    <div class="absolute inset-y-0 right-0 flex w-[min(20rem,85vw)] flex-col bg-canvas shadow-xl">
-      <div class="flex h-16 items-center justify-between border-b border-line px-5">
-        <span class="text-sm font-semibold text-fg">Menu</span>
+    <div class="absolute inset-0 bg-fg/35 backdrop-blur-sm" aria-hidden="true" @click="close"></div>
+    <div
+      class="absolute inset-y-0 right-0 flex w-[min(22rem,90vw)] flex-col border-l border-line bg-canvas shadow-floating"
+    >
+      <div class="flex h-20 items-center justify-between border-b border-line px-6">
+        <span class="text-lg font-black tracking-[0.08em] text-brand">KARYAWISATA</span>
         <button
           ref="closeButton"
           type="button"
-          class="grid h-10 w-10 place-items-center rounded-md border border-line text-fg"
+          class="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface text-fg"
           aria-label="Tutup menu"
           @click="close"
         >
@@ -93,15 +95,22 @@ watch(open, async (value) => {
         </button>
       </div>
 
-      <nav class="flex-1 overflow-y-auto px-5 py-6" aria-label="Navigasi seluler">
+      <nav class="flex-1 overflow-y-auto px-4 py-6" aria-label="Navigasi seluler">
         <ul class="space-y-1">
-          <li v-for="link in links" :key="link.href">
+          <li v-for="(link, index) in links" :key="link.href">
             <a
               :href="link.href"
-              class="block rounded-md px-3 py-3 text-base font-medium text-fg hover:bg-surface"
+              :aria-current="index === 0 ? 'page' : undefined"
+              :class="[
+                'flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-medium transition-colors',
+                index === 0 ? 'bg-brand-subtle text-brand' : 'text-fg hover:bg-surface',
+              ]"
               @click="close"
             >
               {{ link.label }}
+              <span class="text-xs tabular-nums text-fg-subtle">
+                {{ String(index + 1).padStart(2, '0') }}
+              </span>
             </a>
           </li>
         </ul>
@@ -109,12 +118,16 @@ watch(open, async (value) => {
 
       <div class="border-t border-line p-5">
         <a
-          href="#agenda"
-          class="flex items-center justify-center rounded-pill bg-brand px-4 py-3 text-sm font-medium text-on-brand hover:bg-brand-hover"
+          href="#model-3d"
+          class="flex items-center justify-center gap-2 rounded-full bg-brand px-4 py-3.5 text-sm font-semibold text-on-brand transition-colors hover:bg-brand-hover"
           @click="close"
         >
-          Lihat agenda
+          Jelajah 3D
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
         </a>
+        <p class="mt-4 text-center text-[11px] text-fg-subtle">KKL Informatika UPGRIS 2026</p>
       </div>
     </div>
   </div>

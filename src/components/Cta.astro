@@ -1,0 +1,43 @@
+---
+import { site } from '../data/site';
+---
+
+<section id="cta" class="scroll-mt-24 py-16 sm:py-20">
+  <div class="container-page">
+    <div class="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-brand to-brand-dark px-7 py-10 text-white shadow-floating sm:px-12 sm:py-14">
+      <div class="pointer-events-none absolute -bottom-20 -right-12 h-64 w-64 rounded-full bg-white/5" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -left-12 -top-16 h-48 w-48 rounded-full bg-accent/10" aria-hidden="true"></div>
+
+      <div class="relative z-10 max-w-2xl">
+        <span class="inline-flex rounded-full bg-accent px-3 py-1 text-[11px] font-bold text-brand-dark">
+          Dokumentasi KKL 2026
+        </span>
+        <h2 class="mt-4 text-2xl font-extrabold tracking-tight sm:text-4xl">
+          Telusuri cerita perjalanan & pembelajaran kami
+        </h2>
+        <p class="mt-4 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
+          Halaman ini merangkum agenda, catatan kunjungan industri, destinasi, dan dokumentasi
+          visual {site.brand}. Foto serta laporan lengkap akan diperbarui setelah kegiatan.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="#dokumentasi"
+            class="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-brand-dark shadow-md transition-colors hover:bg-accent-hover"
+          >
+            Lihat Dokumentasi
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </a>
+          <a
+            href="/credits"
+            class="inline-flex items-center rounded-full border border-white/25 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
+          >
+            Kredit Aset 3D
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

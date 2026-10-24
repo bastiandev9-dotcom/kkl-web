@@ -1,17 +1,22 @@
 ---
 import { anggota } from '../data/members';
 import MemberCard from './MemberCard.astro';
-import SectionHeader from './SectionHeader.astro';
 ---
 
-<section id="anggota" class="scroll-mt-24 bg-surface py-24 sm:py-28 lg:py-32">
+<section id="anggota" class="scroll-mt-24 py-20 sm:py-24">
   <div class="container-page">
-    <SectionHeader
-      eyebrow="Tim"
-      title="Mahasiswa di balik perjalanan"
-      description="Struktur kepanitiaan dan anggota KKL Informatika UPGRIS 2026."
-      titleId="anggota-judul"
-    />
+    <div class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-brand">Tim</p>
+        <h2 id="anggota-judul" class="mt-2 text-h2 text-fg">Mahasiswa di balik perjalanan</h2>
+        <p class="mt-3 max-w-xl text-sm leading-relaxed text-fg-muted sm:text-base">
+          Struktur kepanitiaan dan anggota KKL Informatika UPGRIS 2026.
+        </p>
+      </div>
+      <p class="shrink-0 self-start rounded-full border border-line bg-surface px-4 py-2 text-xs font-medium text-fg-muted">
+        {anggota.length} anggota
+      </p>
+    </div>
 
     <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {

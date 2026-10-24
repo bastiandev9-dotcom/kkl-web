@@ -1,0 +1,107 @@
+---
+import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+import Navbar from '../components/Navbar.astro';
+
+export function getStaticPaths() {
+  const pages = [
+    {
+      slug: 'kunjungan-industri',
+      eyebrow: 'Kunjungan Industri',
+      title: 'Catatan belajar dari ruang produksi',
+      description:
+        'Halaman ini akan merangkum observasi teknologi, proses produksi, dan pembelajaran dari kunjungan industri KKL Informatika UPGRIS.',
+      image: '/images/beranda/victoria-care.jpg',
+      imageAlt: 'Pabrik manufaktur pada kunjungan industri',
+    },
+    {
+      slug: 'wisata-budaya',
+      eyebrow: 'Wisata & Budaya',
+      title: 'Menjelajah destinasi dan kearifan Bali',
+      description:
+        'Halaman ini akan memuat catatan perjalanan destinasi, pertunjukan budaya, dan refleksi kunjungan selama berada di Bali.',
+      image: '/images/beranda/kecak.jpg',
+      imageAlt: 'Pertunjukan budaya Bali',
+    },
+    {
+      slug: 'jadwal-perjalanan',
+      eyebrow: 'Jadwal Perjalanan',
+      title: 'Lima hari perjalanan KKL Informatika',
+      description:
+        'Halaman ini akan memuat itinerary lengkap, pembagian waktu, rute perjalanan, dan informasi peserta selama kegiatan KKL.',
+      image: '/images/beranda/penglipuran.jpg',
+      imageAlt: 'Desa adat di Bali',
+    },
+    {
+      slug: 'galeri-dokumentasi',
+      eyebrow: 'Galeri Dokumentasi',
+      title: 'Potongan cerita dari perjalanan',
+      description:
+        'Halaman ini akan memuat dokumentasi foto dan video kegiatan, mulai dari kunjungan industri hingga eksplorasi budaya Bali.',
+      image: '/images/beranda/kecak.jpg',
+      imageAlt: 'Dokumentasi kegiatan budaya Bali',
+    },
+  ];
+
+  return pages.map((page) => ({
+    params: { section: page.slug },
+    props: page,
+  }));
+}
+
+const { eyebrow, title, description, image, imageAlt } = Astro.props;
+---
+
+<Base title={eyebrow} description={description}>
+  <Navbar />
+  <main id="konten">
+    <section class="mx-auto max-w-[1400px] px-6 py-16 lg:px-12 lg:py-24">
+      <a
+        href="/"
+        class="mb-10 inline-flex items-center gap-2 text-sm font-medium text-brand transition-colors hover:text-brand-hover"
+      >
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M19 12H5M11 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        Kembali ke beranda
+      </a>
+
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <span class="mb-3 block text-xs font-bold uppercase tracking-widest text-brand">{eyebrow}</span>
+          <h1 class="max-w-xl text-4xl font-extrabold leading-[1.12] tracking-tight text-neutral-900 md:text-5xl">
+            {title}
+          </h1>
+          <p class="mt-6 max-w-xl text-sm leading-relaxed text-neutral-600 md:text-base">{description}</p>
+
+          <div class="mt-8 inline-flex items-center gap-2 rounded-full border border-brand/15 bg-brand/10 px-4 py-2 text-sm font-semibold text-brand">
+            <span class="h-2 w-2 rounded-full bg-[#9ad84f]" aria-hidden="true"></span>
+            Halaman sedang disiapkan
+          </div>
+
+          <p class="mt-6 max-w-lg text-sm leading-relaxed text-neutral-500">
+            Beranda sudah memakai struktur multi-page. Konten lengkap halaman ini akan dikerjakan pada
+            tahap redesign berikutnya sesuai desain.
+          </p>
+        </div>
+
+        <div class="relative overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-soft">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img
+              src={image}
+              alt={imageAlt}
+              width="512"
+              height="279"
+              class="h-full w-full object-cover"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" aria-hidden="true"></div>
+          <p class="absolute bottom-5 left-5 text-sm font-semibold text-white">KARYAWISATA 2026</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>

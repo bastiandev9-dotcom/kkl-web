@@ -12,39 +12,6 @@ export interface HeroSceneHandle {
   dispose: () => void;
 }
 
-function createBlobShadow() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 256;
-  canvas.height = 256;
-
-  const context = canvas.getContext('2d');
-
-  if (context) {
-    const gradient = context.createRadialGradient(128, 128, 0, 128, 128, 128);
-    gradient.addColorStop(0, 'rgba(26, 26, 26, 0.42)');
-    gradient.addColorStop(0.55, 'rgba(26, 26, 26, 0.14)');
-    gradient.addColorStop(1, 'rgba(26, 26, 26, 0)');
-    context.fillStyle = gradient;
-    context.fillRect(0, 0, 256, 256);
-  }
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-
-  const material = new THREE.MeshBasicMaterial({
-    map: texture,
-    transparent: true,
-    depthWrite: false,
-    opacity: 0.55,
-  });
-
-  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(3.5, 3.5), material);
-  mesh.rotation.x = -Math.PI / 2;
-  mesh.position.y = 0.008;
-
-  return mesh;
-}
-
 export function createHeroScene(container: HTMLElement): HeroSceneHandle {
   const scene = new THREE.Scene();
 
@@ -78,20 +45,6 @@ export function createHeroScene(container: HTMLElement): HeroSceneHandle {
   const fill = new THREE.DirectionalLight(0xd9f18a, 1.15);
   fill.position.set(-4, 2, -3);
   scene.add(fill);
-
-  const platformMaterial = new THREE.MeshStandardMaterial({
-    color: 0xeef3ed,
-    roughness: 1,
-  });
-  const platform = new THREE.Mesh(
-    new THREE.CylinderGeometry(2.35, 2.35, 0.12, 64),
-    platformMaterial,
-  );
-  platform.position.y = -0.06;
-  scene.add(platform);
-
-  const shadow = createBlobShadow();
-  scene.add(shadow);
 
   const tilt = new THREE.Group();
   const spin = new THREE.Group();

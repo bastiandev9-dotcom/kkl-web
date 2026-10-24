@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-defineProps<{
+const props = defineProps<{
   links: { href: string; label: string }[];
+  activeHref: string;
 }>();
 
 const open = ref(false);
 const closeButton = ref<HTMLButtonElement | null>(null);
 let toggleButton: HTMLElement | null = null;
 let desktopQuery: MediaQueryList | null = null;
+
+function isActive(href: string) {
+  return props.activeHref === href;
+}
 
 function close() {
   open.value = false;
@@ -63,21 +68,21 @@ watch(open, async (value) => {
   <div
     v-show="open"
     id="menu-seluler"
-    class="fixed inset-0 z-50 lg:hidden"
+    class="fixed inset-0 z-[60] lg:hidden"
     role="dialog"
     aria-modal="true"
     aria-label="Menu navigasi"
   >
     <div class="absolute inset-0 bg-fg/35 backdrop-blur-sm" aria-hidden="true" @click="close"></div>
     <div
-      class="absolute inset-y-0 right-0 flex w-[min(22rem,90vw)] flex-col border-l border-line bg-canvas shadow-floating"
+      class="absolute inset-y-0 right-0 flex w-[min(22rem,90vw)] flex-col border-l border-neutral-200 bg-[#fafaf4] shadow-floating"
     >
-      <div class="flex h-20 items-center justify-between border-b border-line px-6">
-        <span class="text-lg font-black tracking-[0.08em] text-brand">KARYAWISATA</span>
+      <div class="flex h-20 items-center justify-between border-b border-neutral-200 px-6">
+        <span class="text-lg font-black tracking-wider text-brand">KARYAWISATA</span>
         <button
           ref="closeButton"
           type="button"
-          class="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface text-fg"
+          class="grid h-10 w-10 place-items-center rounded-full border border-neutral-300 bg-white text-fg"
           aria-label="Tutup menu"
           @click="close"
         >
@@ -100,15 +105,17 @@ watch(open, async (value) => {
           <li v-for="(link, index) in links" :key="link.href">
             <a
               :href="link.href"
-              :aria-current="index === 0 ? 'page' : undefined"
+              :aria-current="isActive(link.href) ? 'page' : undefined"
               :class="[
-                'flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-medium transition-colors',
-                index === 0 ? 'bg-brand-subtle text-brand' : 'text-fg hover:bg-surface',
+                'flex items-center justify-between rounded-2xl px-4 py-3.5 text-base transition-colors',
+                isActive(link.href)
+                  ? 'bg-brand/10 font-semibold text-brand'
+                  : 'font-medium text-neutral-700 hover:bg-white',
               ]"
               @click="close"
             >
               {{ link.label }}
-              <span class="text-xs tabular-nums text-fg-subtle">
+              <span class="text-xs tabular-nums text-neutral-400">
                 {{ String(index + 1).padStart(2, '0') }}
               </span>
             </a>
@@ -116,18 +123,18 @@ watch(open, async (value) => {
         </ul>
       </nav>
 
-      <div class="border-t border-line p-5">
+      <div class="border-t border-neutral-200 p-5">
         <a
-          href="#model-3d"
-          class="flex items-center justify-center gap-2 rounded-full bg-brand px-4 py-3.5 text-sm font-semibold text-on-brand transition-colors hover:bg-brand-hover"
+          href="/jadwal-perjalanan"
+          class="flex items-center justify-center gap-2 rounded-full bg-brand px-4 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-brand-hover"
           @click="close"
         >
-          Jelajah 3D
+          Lihat Jadwal
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
             <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
         </a>
-        <p class="mt-4 text-center text-[11px] text-fg-subtle">KKL Informatika UPGRIS 2026</p>
+        <p class="mt-4 text-center text-[11px] text-neutral-400">KKL Informatika UPGRIS 2026</p>
       </div>
     </div>
   </div>

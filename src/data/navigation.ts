@@ -4,9 +4,9 @@ export interface NavigationLink {
 }
 
 export const navigation: NavigationLink[] = [
-  { href: '#beranda', label: 'Beranda' },
-  { href: '#kunjungan-industri', label: 'Kunjungan Industri' },
-  { href: '#wisata-budaya', label: 'Wisata & Budaya' },
-  { href: '#jadwal', label: 'Jadwal Perjalanan' },
-  { href: '#galeri', label: 'Galeri' },
+  { href: '/', label: 'Beranda' },
+  { href: '/kunjungan-industri', label: 'Kunjungan Industri' },
+  { href: '/wisata-budaya', label: 'Wisata & Budaya' },
+  { href: '/jadwal-perjalanan', label: 'Jadwal Perjalanan' },
+  { href: '/galeri-dokumentasi', label: 'Galeri Dokumentasi' },
 ];

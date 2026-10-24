@@ -1,43 +1,61 @@
 ---
-import { site } from '../data/site';
 ---
 
-<section id="cta" class="scroll-mt-24 py-16 sm:py-20">
-  <div class="container-page">
-    <div class="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-brand to-brand-dark px-7 py-10 text-white shadow-floating sm:px-12 sm:py-14">
-      <div class="pointer-events-none absolute -bottom-20 -right-12 h-64 w-64 rounded-full bg-white/5" aria-hidden="true"></div>
-      <div class="pointer-events-none absolute -left-12 -top-16 h-48 w-48 rounded-full bg-accent/10" aria-hidden="true"></div>
+<section id="ebooklet" class="mx-auto max-w-7xl px-6 py-16">
+  <div
+    class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand to-brand-dark p-8 text-white shadow-floating md:p-14"
+  >
+    <div class="pointer-events-none absolute -bottom-10 -right-10 h-64 w-64 rounded-full bg-white/5" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute -left-10 -top-10 h-48 w-48 rounded-full bg-accent/10" aria-hidden="true"></div>
 
-      <div class="relative z-10 max-w-2xl">
-        <span class="inline-flex rounded-full bg-accent px-3 py-1 text-[11px] font-bold text-brand-dark">
-          Dokumentasi KKL 2026
-        </span>
-        <h2 class="mt-4 text-2xl font-extrabold tracking-tight sm:text-4xl">
-          Telusuri cerita perjalanan & pembelajaran kami
-        </h2>
-        <p class="mt-4 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
-          Halaman ini merangkum agenda, catatan kunjungan industri, destinasi, dan dokumentasi
-          visual {site.brand}. Foto serta laporan lengkap akan diperbarui setelah kegiatan.
-        </p>
+    <div class="relative z-10 max-w-2xl">
+      <span class="mb-4 inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold text-brand-dark">
+        Buku Panduan &amp; Dokumentasi Lengkap
+      </span>
+      <h2 class="mb-4 text-2xl font-extrabold tracking-tight md:text-4xl">
+        Unduh E-Booklet &amp; Foto Resolusi Penuh
+      </h2>
+      <p class="mb-8 text-sm leading-relaxed text-white/80 md:text-base">
+        Dapatkan file laporan resmi KKL, dokumentasi potret kegiatan beresolusi tinggi, serta modul
+        studi kasus industri secara gratis.
+      </p>
 
-        <div class="mt-7 flex flex-wrap gap-3">
-          <a
-            href="#dokumentasi"
-            class="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-brand-dark shadow-md transition-colors hover:bg-accent-hover"
-          >
-            Lihat Dokumentasi
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-          </a>
-          <a
-            href="/credits"
-            class="inline-flex items-center rounded-full border border-white/25 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
-          >
-            Kredit Aset 3D
-          </a>
-        </div>
-      </div>
+      <form class="flex max-w-md flex-col gap-3 sm:flex-row" data-ebook-form>
+        <label class="sr-only" for="ebook-email">Alamat email kampus</label>
+        <input
+          id="ebook-email"
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          placeholder="Masukkan alamat email kampus..."
+          class="flex-1 rounded-full border-0 bg-white px-5 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:ring-2 focus:ring-accent"
+        />
+        <button
+          type="submit"
+          class="whitespace-nowrap rounded-full bg-accent px-6 py-3 text-sm font-bold text-brand-dark shadow-md transition-colors hover:bg-accent-hover"
+        >
+          Unduh Dokumen
+        </button>
+      </form>
+      <p class="mt-3 hidden text-xs text-white/75" data-ebook-status aria-live="polite"></p>
     </div>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-ebook-form]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const status = form.parentElement?.querySelector<HTMLElement>('[data-ebook-status]');
+
+      if (!status) {
+        return;
+      }
+
+      status.textContent =
+        'E-booklet belum tersedia. Silakan cek kembali setelah kegiatan KKL selesai.';
+      status.classList.remove('hidden');
+    });
+  });
+</script>

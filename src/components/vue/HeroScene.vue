@@ -297,7 +297,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    class="relative aspect-square w-full touch-pan-y overflow-hidden rounded-[2rem] border border-line/80 bg-[radial-gradient(circle_at_50%_35%,#ffffff_0%,#f4f6ee_55%,#e7eedf_100%)] shadow-floating"
+    class="relative h-[360px] w-full touch-pan-y overflow-hidden sm:h-[420px]"
     :data-status="status"
     aria-hidden="true"
   >
@@ -316,7 +316,7 @@ onBeforeUnmount(() => {
       v-if="status === 'fallback' && poster"
       :src="poster"
       alt=""
-      class="absolute inset-0 h-full w-full object-cover"
+      class="absolute inset-0 h-full w-full object-contain"
       loading="lazy"
       decoding="async"
     />

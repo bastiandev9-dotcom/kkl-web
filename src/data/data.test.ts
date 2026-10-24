@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { agenda } from './agenda';
@@ -11,6 +11,57 @@ import { info } from './info';
 import { rute } from './route';
 import { tentang } from './about';
 import credits from './credits.json';
+
+interface GlbAccessor {
+  count: number;
+}
+
+interface GlbPrimitive {
+  attributes?: Record<string, number>;
+  indices?: number;
+  mode?: number;
+}
+
+interface GlbJson {
+  accessors?: GlbAccessor[];
+  meshes?: { primitives?: GlbPrimitive[] }[];
+}
+
+function readGlbBudget(filePath: string) {
+  const buffer = readFileSync(filePath);
+
+  if (buffer.toString('utf8', 0, 4) !== 'glTF') {
+    throw new Error(`${filePath} bukan file GLB yang valid.`);
+  }
+
+  const jsonLength = buffer.readUInt32LE(12);
+  const json = JSON.parse(buffer.toString('utf8', 20, 20 + jsonLength)) as GlbJson;
+  let triangles = 0;
+
+  for (const mesh of json.meshes ?? []) {
+    for (const primitive of mesh.primitives ?? []) {
+      if ((primitive.mode ?? 4) !== 4) {
+        throw new Error(`${filePath} memakai mode primitive yang tidak didukung.`);
+      }
+
+      const accessorIndex = primitive.indices ?? primitive.attributes?.POSITION;
+
+      if (accessorIndex === undefined) {
+        throw new Error(`${filePath} tidak memiliki data geometri.`);
+      }
+
+      const accessor = json.accessors?.[accessorIndex];
+
+      if (!accessor) {
+        throw new Error(`${filePath} memiliki accessor yang tidak valid.`);
+      }
+
+      triangles += Math.floor(accessor.count / 3);
+    }
+  }
+
+  return { bytes: buffer.byteLength, triangles };
+}
 
 describe('agenda', () => {
   it('memuat lima hari sesuai urutan', () => {
@@ -77,6 +128,22 @@ describe('model 3D', () => {
     for (const model of models.filter((item) => item.file)) {
       const filePath = fileURLToPath(new URL(`../../public${model.file}`, import.meta.url));
       expect(existsSync(filePath)).toBe(true);
+    }
+  });
+
+  it('menjaga kandidat model hero di bawah batas performa', () => {
+    for (const key of ['ulun-danu', 'candi-bentar']) {
+      const model = models.find((item) => item.key === key);
+
+      if (!model?.file) {
+        throw new Error(`Model hero ${key} belum memiliki file GLB.`);
+      }
+
+      const filePath = fileURLToPath(new URL(`../../public${model.file}`, import.meta.url));
+      const budget = readGlbBudget(filePath);
+
+      expect(budget.triangles).toBeLessThanOrEqual(100_000);
+      expect(budget.bytes).toBeLessThanOrEqual(2 * 1024 * 1024);
     }
   });
 });

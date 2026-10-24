@@ -1,0 +1,60 @@
+---
+import { kunjungan } from '../../data/kunjungan';
+
+const barClass = {
+  brand: 'bg-brand',
+  accent: 'bg-[#a9c957]',
+};
+---
+
+<section class="px-4 py-8 sm:px-6" aria-labelledby="indeks-title">
+  <div class="mx-auto max-w-7xl">
+    <div class="flex flex-col items-center justify-between gap-8 rounded-[2rem] bg-[#e9e8e3] p-6 sm:p-8 lg:flex-row lg:p-10">
+      <div class="max-w-xl">
+        <span class="text-xs font-bold uppercase tracking-widest text-brand">
+          Evaluasi Kesiapan Industri 4.0
+        </span>
+        <h2
+          id="indeks-title"
+          class="mb-2 mt-1 text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl"
+        >
+          Indeks Observasi Teknis Mahasiswa
+        </h2>
+        <p class="text-sm leading-relaxed text-neutral-600">
+          Data akumulasi penilaian lapangan berdasarkan implementasi 5 pilar transformasi digital
+          industri manufaktur yang dikunjungi selama KKL.
+        </p>
+      </div>
+
+      <div class="w-full max-w-md rounded-2xl bg-canvas p-5 shadow-sm">
+        <div class="space-y-4">
+          {
+            kunjungan.readiness.map((metric) => (
+              <div>
+                <div class="mb-1 flex justify-between gap-4 text-xs font-semibold text-neutral-700">
+                  <span>{metric.label}</span>
+                  <span class:list={[metric.tone === 'accent' ? 'text-[#6c861e]' : 'text-brand']}>
+                    {metric.value}%
+                  </span>
+                </div>
+                <div
+                  class="h-2 w-full overflow-hidden rounded-full bg-[#deddd4]"
+                  role="progressbar"
+                  aria-label={metric.label}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow={metric.value}
+                >
+                  <div
+                    class:list={['h-full rounded-full', barClass[metric.tone]]}
+                    style={`width: ${metric.value}%`}
+                  ></div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

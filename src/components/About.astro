@@ -1,51 +1,66 @@
 ---
 import { tentang } from '../data/about';
-import ActivityBadge from './ActivityBadge.astro';
-import PhotoPlaceholder from './PhotoPlaceholder.astro';
-import SectionHeader from './SectionHeader.astro';
+import { site } from '../data/site';
+
+const badges = ['5 hari', '2 kunjungan industri', '6 destinasi wisata & budaya'];
 ---
 
-<section id="tentang" class="scroll-mt-24 py-24 sm:py-28 lg:py-32">
-  <div class="container-page grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+<section id="tentang" class="scroll-mt-24 py-20 sm:py-24">
+  <div class="container-page grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
     <div>
-      <SectionHeader eyebrow={tentang.eyebrow} title={tentang.judul} titleId="tentang-judul" />
+      <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-brand">{tentang.eyebrow}</p>
+      <h2 id="tentang-judul" class="mt-2 text-h2 text-fg">{tentang.judul}</h2>
 
-      <div class="mt-6 space-y-4 text-base leading-relaxed text-fg-muted">
+      <div class="mt-6 space-y-4 text-sm leading-relaxed text-fg-muted sm:text-base">
         {tentang.paragraf.map((paragraf) => <p>{paragraf}</p>)}
       </div>
 
       <div class="mt-8 flex flex-wrap gap-2">
-        <span class="rounded-pill border border-line bg-surface px-3 py-1.5 text-xs font-medium text-fg">
-          5 hari
+        {
+          badges.map((badge) => (
+            <span class="rounded-full border border-line bg-surface px-3.5 py-1.5 text-xs font-medium text-fg">
+              {badge}
+            </span>
+          ))
+        }
+      </div>
+
+      <div class="mt-8 flex items-center gap-4 rounded-2xl border border-brand/15 bg-brand/5 p-4">
+        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand text-sm font-bold text-on-brand">
+          IF
         </span>
-        <span class="rounded-pill border border-line bg-surface px-3 py-1.5 text-xs font-medium text-fg">
-          2 kunjungan industri
-        </span>
-        <span class="rounded-pill border border-line bg-surface px-3 py-1.5 text-xs font-medium text-fg">
-          Semarang - Bali
-        </span>
+        <div>
+          <p class="text-sm font-bold text-fg">{site.prodi}, {site.kampus}</p>
+          <p class="mt-0.5 text-xs text-fg-muted">{site.kelompok}</p>
+        </div>
       </div>
     </div>
 
     <div class="space-y-4">
       {
         tentang.jalur.map((jalur, index) => (
-          <article class="rounded-xl border border-line bg-surface p-6">
+          <article class="group rounded-3xl border border-line bg-surface p-6 shadow-soft transition-colors hover:border-brand/30 sm:p-7">
             <div class="flex items-center justify-between gap-4">
-              <span class="font-mono text-xs text-fg-subtle">{String(index + 1).padStart(2, '0')}</span>
-              <ActivityBadge jenis={jalur.kategori === 'industri' ? 'kunjungan' : 'budaya'} />
+              <span class="grid h-11 w-11 place-items-center rounded-2xl bg-brand/5 text-brand">
+                {index === 0 ? (
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                    <path d="M3 21h18M5 21V8l4-2v15M9 21V6l6-3v18M15 21v-8l4-2v10" stroke-linejoin="round"></path>
+                  </svg>
+                ) : (
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                    <path d="M3 21h18M5 21V11l3-2V6h3v2h2V6h3v2l3 2v10M9 21v-5a3 3 0 0 1 6 0v5M12 8v4" stroke-linejoin="round"></path>
+                  </svg>
+                )}
+              </span>
+              <span class="rounded-full border border-line bg-canvas px-3 py-1 text-[11px] font-semibold text-fg-muted">
+                {index === 0 ? 'Industri' : 'Budaya'}
+              </span>
             </div>
-            <h3 class="mt-4 text-h4 text-fg">{jalur.judul}</h3>
+            <h3 class="mt-5 text-h4 text-fg">{jalur.judul}</h3>
             <p class="mt-2 text-sm leading-relaxed text-fg-muted">{jalur.deskripsi}</p>
           </article>
         ))
       }
-
-      <PhotoPlaceholder
-        label="Suasana perjalanan KKL"
-        kategori="perjalanan"
-        className="aspect-[16/9] w-full rounded-xl border border-line"
-      />
     </div>
   </div>
 </section>

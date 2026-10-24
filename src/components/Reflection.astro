@@ -1,0 +1,87 @@
+---
+import { tentang } from '../data/about';
+import { destinasi } from '../data/destinations';
+import { site } from '../data/site';
+
+const kutipan = [
+  {
+    id: 'victoria-care',
+    label: 'Catatan lapangan - Industri',
+    kategori: 'industri',
+    href: '#catatan-victoria-care',
+  },
+  {
+    id: 'devdan',
+    label: 'Catatan lapangan - Budaya',
+    kategori: 'budaya',
+    href: '#destinasi-devdan',
+  },
+].flatMap((item) => {
+  const tempat = destinasi.find((destination) => destination.id === item.id);
+
+  if (!tempat?.catatanBelajar) {
+    return [];
+  }
+
+  return [{ ...item, nama: tempat.nama, catatan: tempat.catatanBelajar }];
+});
+---
+
+<section id="refleksi" class="scroll-mt-24 border-y border-line/70 bg-surface py-20 sm:py-24">
+  <div class="container-page grid items-center gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-brand">Refleksi KKL</p>
+      <h2 class="mt-2 text-h2 text-fg">Menghubungkan teori kampus dengan realitas lapangan</h2>
+      <p class="mt-5 text-sm leading-relaxed text-fg-muted sm:text-base">
+        {tentang.paragraf[1]}
+      </p>
+
+      <div class="mt-8 flex items-center gap-4 rounded-2xl border border-brand/15 bg-brand/5 p-4">
+        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand text-sm font-bold text-on-brand">
+          IF
+        </span>
+        <div>
+          <p class="text-sm font-bold text-fg">{site.prodi}</p>
+          <p class="mt-0.5 text-xs text-fg-muted">{site.kampus}</p>
+        </div>
+      </div>
+
+      <a
+        href="#kunjungan-industri"
+        class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand transition-colors hover:text-brand-hover"
+      >
+        Baca catatan lengkap
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </a>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:col-span-7">
+      {
+        kutipan.map((item) => (
+          <article class="flex flex-col justify-between rounded-3xl border border-line bg-canvas p-7 shadow-soft">
+            <div>
+              <span class="grid h-10 w-10 place-items-center rounded-2xl bg-brand/5 text-brand">
+                {item.kategori === 'industri' ? (
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                    <path d="M3 21h18M5 21V8l4-2v15M9 21V6l6-3v18M15 21v-8l4-2v10" stroke-linejoin="round"></path>
+                  </svg>
+                ) : (
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                    <path d="M3 21h18M5 21V11l3-2V6h3v2h2V6h3v2l3 2v10M9 21v-5a3 3 0 0 1 6 0v5M12 8v4" stroke-linejoin="round"></path>
+                  </svg>
+                )}
+              </span>
+              <p class="mt-6 text-base leading-relaxed text-fg italic">"{item.catatan}"</p>
+            </div>
+            <div class="mt-7 border-t border-line pt-4">
+              <p class="text-xs font-semibold text-brand">{item.label}</p>
+              <p class="mt-1 text-xs text-fg-subtle">{item.nama}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

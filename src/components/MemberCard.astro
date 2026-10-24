@@ -9,9 +9,9 @@ interface Props {
 const { anggota } = Astro.props;
 ---
 
-<article class="flex items-center gap-4 rounded-xl border border-line bg-canvas p-5">
+<article class="flex items-center gap-4 rounded-2xl border border-line bg-surface p-5 shadow-soft transition-colors hover:border-brand/30">
   <span
-    class="grid h-12 w-12 shrink-0 place-items-center rounded-pill bg-brand-subtle text-sm font-semibold text-brand"
+    class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/10 text-sm font-bold text-brand"
     aria-hidden="true"
   >
     {initials(anggota.nama)}

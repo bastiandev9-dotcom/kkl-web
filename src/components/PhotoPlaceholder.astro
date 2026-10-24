@@ -3,48 +3,76 @@ interface Props {
   label: string;
   kategori?: string;
   className?: string;
+  showLabel?: boolean;
 }
 
-const { label, kategori = 'default', className = '' } = Astro.props;
+const { label, kategori = 'default', className = '', showLabel = true } = Astro.props;
 
 const icons: Record<string, string> = {
   industri: 'M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5M9 10h.01M15 10h.01',
   wisata: 'M3 20h18L14 9l-3 5-2-3-6 9ZM17 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z',
-  budaya:
-    'M12 3c4.5 0 7 2.5 7 6v5c0 4.5-3 7-7 7s-7-2.5-7-7V9c0-3.5 2.5-6 7-6Zm-3 5h.01M15 8h.01M9 14c1.8 2 4.2 2 6 0',
+  budaya: 'M3 21h18M5 21V11l3-2V6h3v2h2V6h3v2l3 2v10M9 21v-5a3 3 0 0 1 6 0v5M12 8v4',
   belanja: 'M6 8h12l1 13H5L6 8Zm3 0V6a3 3 0 0 1 6 0v2',
   kuliner: 'M7 3v8M4 3v5a3 3 0 0 0 6 0V3M7 11v10M17 3v18M17 3c2 2 3 4 3 7h-3',
   perjalanan: 'M4 15l2 5h12l2-5M6 15V9h12v6M9 9V5h6v4M3 15h18',
-  default:
-    'M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Zm0-8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z',
+  default: 'M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Zm0-8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z',
+};
+
+const tones: Record<string, [string, string, string]> = {
+  industri: ['#eff4e8', '#e5ecde', '#d7e2d4'],
+  wisata: ['#f2f8e7', '#eaf1db', '#dce8cb'],
+  budaya: ['#f6f1e9', '#ede7da', '#e5dccb'],
+  belanja: ['#f4f2e7', '#eeeade', '#e3ddcb'],
+  kuliner: ['#f7f2e8', '#efe6d7', '#e8dcc8'],
+  perjalanan: ['#f0f2e9', '#e6e9df', '#d9dfd1'],
+  default: ['#f3f5ec', '#e9ede2', '#dce3d5'],
 };
 
 const icon = icons[kategori] ?? icons.default;
-const gradient =
-  'radial-gradient(circle at 20% 20%, rgb(217 241 138 / 0.55), transparent 55%), radial-gradient(circle at 80% 80%, rgb(74 103 65 / 0.14), transparent 60%)';
+const [start, middle, end] = tones[kategori] ?? tones.default;
+const background = `radial-gradient(circle at 78% 16%, rgb(213 237 134 / 0.5), transparent 34%), linear-gradient(145deg, ${start} 0%, ${middle} 52%, ${end} 100%)`;
 ---
 
 <div
-  class={`relative flex items-center justify-center overflow-hidden bg-brand-subtle ${className}`}
+  class={`relative flex items-center justify-center overflow-hidden ${className}`}
+  style={`background: ${background};`}
   role="img"
   aria-label={`Ilustrasi ${label}`}
 >
-  <div class="absolute inset-0" style={`background-image: ${gradient};`} aria-hidden="true"></div>
   <svg
-    class="relative h-16 w-16 text-brand/45"
-    viewBox="0 0 24 24"
+    class="absolute inset-0 h-full w-full text-brand/25"
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
     fill="none"
-    stroke="currentColor"
-    stroke-width="1.5"
-    stroke-linecap="round"
-    stroke-linejoin="round"
     aria-hidden="true"
   >
-    <path d={icon}></path>
+    <circle cx="328" cy="58" r="44" fill="currentColor" opacity="0.18"></circle>
+    <path d="M-20 246c64-48 110-62 164-35 42 21 75 17 111-10 42-32 94-40 165 3v116H-20Z" fill="currentColor" opacity="0.14"></path>
+    <path d="M-20 274c70-28 120-29 176-6 54 22 101 18 146-9 38-23 81-27 118-13v74H-20Z" fill="currentColor" opacity="0.1"></path>
+    <path d="M36 76c28-26 62-38 100-36M30 94c36-25 76-35 118-31" stroke="currentColor" stroke-width="1" opacity="0.34"></path>
+    <path d="M318 196c20-17 42-23 65-18M324 214c18-12 36-16 55-13" stroke="currentColor" stroke-width="1" opacity="0.34"></path>
   </svg>
-  <span
-    class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] truncate rounded-pill bg-canvas/85 px-3 py-1 text-xs font-medium text-fg backdrop-blur-sm"
-  >
-    {label}
+
+  <span class="relative grid h-16 w-16 place-items-center rounded-2xl border border-white/70 bg-white/45 shadow-sm backdrop-blur-sm">
+    <svg
+      class="h-8 w-8 text-brand/65"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d={icon}></path>
+    </svg>
   </span>
+
+  {
+    showLabel && (
+      <span class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] truncate rounded-full border border-white/50 bg-white/75 px-3 py-1 text-xs font-medium text-fg backdrop-blur-sm">
+        {label}
+      </span>
+    )
+  }
 </div>

@@ -138,6 +138,18 @@ function fail() {
   status.value = 'fallback';
 }
 
+function supportsWebGl() {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('webgl2') ?? canvas.getContext('webgl');
+
+  if (!context) {
+    return false;
+  }
+
+  context.getExtension('WEBGL_lose_context')?.loseContext();
+  return true;
+}
+
 onMounted(async () => {
   mounted = true;
   const container = host.value;
@@ -154,7 +166,7 @@ onMounted(async () => {
   const lowCores =
     navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 2;
 
-  if (lowMemory || lowCores) {
+  if (lowMemory || lowCores || !supportsWebGl()) {
     status.value = 'fallback';
     return;
   }

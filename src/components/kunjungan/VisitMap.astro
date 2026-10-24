@@ -1,0 +1,97 @@
+---
+import type { Visit } from '../../data/kunjungan';
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  visit: Visit;
+}
+
+const { visit } = Astro.props;
+---
+
+<section
+  id={visit.id}
+  class="scroll-mt-28 px-4 py-6 sm:px-6 sm:py-8"
+  data-visit
+  data-category={visit.category}
+  aria-labelledby={`${visit.id}-title`}
+>
+  <div class="mx-auto max-w-7xl">
+    <article class="rounded-[2rem] bg-white p-5 shadow-soft sm:p-8 lg:p-12">
+      <div class="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-10">
+        <div class="relative group lg:col-span-6">
+          <div class="relative h-80 overflow-hidden rounded-2xl shadow-sm lg:h-96">
+            <img
+              src={visit.image}
+              alt={visit.imageAlt}
+              width="512"
+              height="512"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
+              aria-hidden="true"
+            ></div>
+            <span class="absolute left-4 top-4 inline-flex rounded-full border border-white/50 bg-white/80 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-neutral-800 backdrop-blur-md">
+              {visit.categoryLabel}
+            </span>
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <p class="flex items-center gap-1.5 text-base font-semibold">
+                <Icon name="map-pin" class="h-4 w-4" strokeWidth={1.8} />
+                {visit.imageTitle}
+              </p>
+              <p class="mt-1 text-xs text-white/75">{visit.imageSubtitle}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6">
+          <span class="mb-4 inline-flex rounded-full bg-accent/60 px-3.5 py-1.5 text-[11px] font-semibold text-brand-dark">
+            {visit.date}
+          </span>
+
+          <h2
+            id={`${visit.id}-title`}
+            class="mb-4 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl"
+          >
+            {visit.title}
+          </h2>
+
+          <p class="mb-6 text-sm leading-relaxed text-neutral-600 sm:text-base">
+            {visit.description}
+          </p>
+
+          <div class="mb-7 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {
+              visit.insights.map((insight) => (
+                <div class="rounded-xl bg-[#f4f4ee] p-4">
+                  <span class="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-brand/10 text-brand">
+                    <Icon name={insight.icon} class="h-4 w-4" strokeWidth={1.8} />
+                  </span>
+                  <h3 class="text-sm font-semibold leading-snug text-neutral-900">
+                    {insight.title}
+                  </h3>
+                  <p class="mt-1 text-xs leading-relaxed text-neutral-500">
+                    {insight.description}
+                  </p>
+                </div>
+              ))
+            }
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            {
+              visit.tags.map((tag) => (
+                <span class="rounded-full bg-[#e9e8e3] px-3 py-1 text-xs font-medium text-neutral-600">
+                  {tag}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>

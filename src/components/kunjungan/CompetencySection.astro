@@ -1,0 +1,60 @@
+---
+import { kunjungan } from '../../data/kunjungan';
+import Icon from '../ui/Icon.astro';
+
+const toneClass = {
+  brand: 'bg-brand/10 text-brand',
+  accent: 'bg-accent/60 text-brand-dark',
+  rose: 'bg-[#fbe8f0] text-[#8c4f67]',
+};
+---
+
+<section class="px-4 py-16 sm:px-6" aria-labelledby="kompetensi-title">
+  <div class="mx-auto max-w-7xl">
+    <div class="mx-auto mb-12 max-w-2xl text-center">
+      <span class="text-xs font-bold uppercase tracking-widest text-brand">
+        Capaian Pembelajaran Lapangan
+      </span>
+      <h2
+        id="kompetensi-title"
+        class="mb-3 mt-2 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl"
+      >
+        Pemetaan Kompetensi Mahasiswa
+      </h2>
+      <p class="text-sm leading-relaxed text-neutral-500 sm:text-base">
+        Korelasi langsung antara materi kurikulum Program Studi Informatika UPGRIS dengan temuan
+        nyata selama eksplorasi industri manufaktur dan teknologi.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      {
+        kunjungan.competencies.map((item) => (
+          <article class="flex flex-col justify-between rounded-2xl bg-white p-6 shadow-soft transition-transform duration-300 hover:-translate-y-1 sm:p-8">
+            <div>
+              <div class="mb-6 flex items-center justify-between">
+                <span class="text-4xl font-black text-brand/20">{item.number}</span>
+                <span
+                  class:list={[
+                    'flex h-11 w-11 items-center justify-center rounded-full',
+                    toneClass[item.tone],
+                  ]}
+                >
+                  <Icon name={item.icon} class="h-5 w-5" strokeWidth={1.8} />
+                </span>
+              </div>
+              <h3 class="mb-3 text-xl font-semibold tracking-tight text-neutral-900">
+                {item.title}
+              </h3>
+              <p class="mb-6 text-sm leading-relaxed text-neutral-600">{item.description}</p>
+            </div>
+            <div class="flex items-center gap-2 rounded-xl bg-[#e9e8e3]/60 p-3 text-xs font-medium text-neutral-700">
+              <Icon name="bookmark" class="h-4 w-4 shrink-0 text-brand" strokeWidth={1.8} />
+              <span>Matakuliah: {item.course}</span>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
